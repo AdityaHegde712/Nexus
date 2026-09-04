@@ -1,0 +1,42 @@
+{
+  "description": "Nexus personal lifecycle hooks.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*|exec_command",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --script hooks/bedtime_reminder.py",
+            "timeout": 5,
+            "statusMessage": "Checking late-night work guard"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --script hooks/bedtime_reminder.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run --script hooks/inject_user_profile.py",
+            "timeout": 5,
+            "additionalContextLimit": 1000
+          }
+        ]
+      }
+    ]
+  }
+}
